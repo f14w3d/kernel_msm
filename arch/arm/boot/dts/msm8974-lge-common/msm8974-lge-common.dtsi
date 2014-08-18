@@ -41,13 +41,22 @@
 		reg = <0xf9960000 0x1000>,
 			<0xf9944000 0x19000>;
 		reg-names = "core_mem", "bam_mem";
-		interrupts = <0 116 0>, <0 239 0>;
-		interrupt-names = "core_irq", "bam_irq";
+		interrupt-names = "core_irq", "bam_irq", "wakeup_irq";
+		#address-cells = <0>;
+		interrupt-parent = <&uart10>;
+		interrupts = <0 1 2>;
+		#interrupt-cells = <1>;
+		interrupt-map-mask = <0xffffffff>;
+		interrupt-map = <0 &intc 0 116 0
+				1 &intc 0 239 0
+				2 &msmgpio 54 0>;
 
 		qcom,tx-gpio = <&msmgpio 53 0x00>;
 		qcom,rx-gpio = <&msmgpio 54 0x00>;
 		qcom,cts-gpio = <&msmgpio 55 0x00>;
 		qcom,rfr-gpio = <&msmgpio 56 0x00>;
+		qcom,inject-rx-on-wakeup = <1>;
+		qcom,rx-char-to-inject = <0xFD>;
 
 		qcom,bam-tx-ep-pipe-index = <6>;
 		qcom,bam-rx-ep-pipe-index = <7>;

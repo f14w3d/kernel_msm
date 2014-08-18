@@ -538,6 +538,11 @@ static void msm_hsl_start_tx(struct uart_port *port)
 	if (is_console(port) && console_disabled())
 		return;
 
+	if (port->suspended) {
+		pr_err("%s: System is in Suspend state\n", __func__);
+		return;
+	}
+
 	msm_hsl_port->imr |= UARTDM_ISR_TXLEV_BMSK;
 	msm_hsl_write(port, msm_hsl_port->imr,
 		regmap[msm_hsl_port->ver_id][UARTDM_IMR]);
